@@ -1,0 +1,534 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
+
+export default function Portfolio() {
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audio, setAudio] = useState(null);
+  const [particles, setParticles] = useState([]);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  // Create enhanced particles system
+  useEffect(() => {
+    const createParticle = (id) => ({
+      id,
+      x: Math.random() * window.innerWidth,
+      y: -20,
+      size: Math.random() * 4 + 1,
+      speed: Math.random() * 2 + 0.5,
+      opacity: Math.random() * 0.8 + 0.2,
+      drift: Math.random() * 0.5 - 0.25,
+      type: Math.random() > 0.8 ? 'star' : Math.random() > 0.6 ? 'diamond' : 'circle',
+      color: Math.random() > 0.9 ? '#00ffff' : Math.random() > 0.7 ? '#a29bfe' : '#eeeef7',
+      rotation: Math.random() * 360,
+      rotationSpeed: Math.random() * 2 - 1,
+      pulsePhase: Math.random() * Math.PI * 2,
+      attracted: false
+    });
+
+    const initialParticles = Array.from({ length: 200 }, (_, i) => createParticle(i));
+    setParticles(initialParticles);
+
+    let animationId;
+    let particleId = initialParticles.length;
+
+    const animate = () => {
+      setParticles(prev => {
+        const updated = prev.map(particle => {
+          // Mouse attraction effect
+          const dx = mousePos.x - particle.x;
+          const dy = mousePos.y - particle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const attraction = distance < 150 ? (150 - distance) / 150 : 0;
+
+          let newX = particle.x + particle.drift + (attraction * dx * 0.01);
+          let newY = particle.y + particle.speed - (attraction * 0.5);
+
+          // Add some turbulence
+          newX += Math.sin(Date.now() * 0.001 + particle.id) * 0.5;
+
+          // Wrap around screen
+          if (newX < -10) newX = window.innerWidth + 10;
+          if (newX > window.innerWidth + 10) newX = -10;
+
+          return {
+            ...particle,
+            x: newX,
+            y: newY,
+            rotation: particle.rotation + particle.rotationSpeed,
+            attracted: attraction > 0.3
+          };
+        });
+
+        // Remove particles that have fallen off screen and add new ones
+        const filtered = updated.filter(p => p.y < window.innerHeight + 20);
+
+        // Add new particles from top
+        while (filtered.length < 200) {
+          filtered.push(createParticle(particleId++));
+        }
+
+        return filtered;
+      });
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [mousePos]);
+
+  // Track mouse position
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Initialize audio with safety check
+  useEffect(() => {
+    if (typeof window !== "undefined" && typeof Audio !== "undefined") {
+      try {
+        const newAudio = new Audio("/ambient.mp3");
+        newAudio.loop = true;
+        newAudio.volume = 0.05;
+        setAudio(newAudio);
+      } catch (e) {
+        console.warn("Audio init failed", e);
+      }
+    }
+  }, []);
+
+  // Toggle background music play/pause
+  const toggleAudio = () => {
+    if (!audio) return;
+    if (audioPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(() => {});
+    }
+    setAudioPlaying(!audioPlaying);
+  };
+
+  // Render particle based on type
+  const renderParticle = (particle) => {
+    const baseStyle = {
+      position: 'fixed',
+      left: particle.x,
+      top: particle.y,
+      width: particle.size,
+      height: particle.size,
+      opacity: particle.opacity + (particle.attracted ? 0.3 : 0) + Math.sin(Date.now() * 0.003 + particle.pulsePhase) * 0.1,
+      transform: `rotate(${particle.rotation}deg) scale(${particle.attracted ? 1.5 : 1})`,
+      transition: particle.attracted ? 'transform 0.3s ease' : 'none',
+      pointerEvents: 'none',
+      zIndex: 1
+    };
+
+    switch (particle.type) {
+      case 'star':
+        return (
+          <div
+            key={particle.id}
+            style={{
+              ...baseStyle,
+              background: particle.color,
+              clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+              filter: `drop-shadow(0 0 ${particle.attracted ? 8 : 4}px ${particle.color})`
+            }}
+          />
+        );
+      case 'diamond':
+        return (
+          <div
+            key={particle.id}
+            style={{
+              ...baseStyle,
+              background: `linear-gradient(45deg, ${particle.color}, ${particle.color}80)`,
+              clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+              filter: `drop-shadow(0 0 ${particle.attracted ? 6 : 3}px ${particle.color})`
+            }}
+          />
+        );
+      default:
+        return (
+          <div
+            key={particle.id}
+            style={{
+              ...baseStyle,
+              background: `radial-gradient(circle, ${particle.color}, ${particle.color}60)`,
+              borderRadius: '50%',
+              filter: `drop-shadow(0 0 ${particle.attracted ? 6 : 3}px ${particle.color})`
+            }}
+          />
+        );
+    }
+  };
+
+  // Experimental tech stack styles: floating badges with random rotation
+  const techStacks = [
+    "HTML5", "CSS3", "JavaScript", "React", "Next.js",
+    "Tailwind CSS", "TypeScript", "Git", "Node.js", "Vite"
+  ];
+
+  return (
+    <>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Playfair+Display&family=Space+Mono&display=swap"
+        rel="stylesheet"
+      />
+
+      {/* Enhanced Particle System */}
+      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', zIndex: 1 }}>
+        {particles.map(renderParticle)}
+      </div>
+
+      {/* Aurora Background Effect */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: `
+            radial-gradient(ellipse at 20% 30%, rgba(162, 155, 254, 0.1) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 70%, rgba(127, 255, 212, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 40% 80%, rgba(187, 153, 255, 0.06) 0%, transparent 50%),
+            linear-gradient(180deg, #0b0c1b 0%, #1a1b3a 100%)
+          `,
+          zIndex: 0
+        }}
+      />
+
+      {/* Mouse cursor glow effect */}
+      <div
+        style={{
+          position: 'fixed',
+          left: mousePos.x - 100,
+          top: mousePos.y - 100,
+          width: 200,
+          height: 200,
+          background: 'radial-gradient(circle, rgba(162, 155, 254, 0.1) 0%, transparent 70%)',
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          zIndex: 2,
+          transition: 'opacity 0.3s ease',
+          opacity: 0.6
+        }}
+      />
+
+      <main
+        style={{
+          fontFamily: "'Montserrat', sans-serif",
+          color: "#e0e0ff",
+          minHeight: "100vh",
+          padding: "3rem 1.5rem",
+          backgroundColor: "transparent",
+          overflowY: "auto",
+          scrollBehavior: "smooth",
+          maxWidth: 900,
+          margin: "auto",
+          userSelect: "none",
+          position: 'relative',
+          zIndex: 10
+        }}
+      >
+        {/* Music toggle */}
+        <button
+          onClick={toggleAudio}
+          style={{
+            position: "fixed",
+            top: 20,
+            right: 20,
+            backgroundColor: "#15172b",
+            border: "none",
+            borderRadius: 8,
+            color: "#7fffd4",
+            padding: "10px 18px",
+            fontWeight: "700",
+            cursor: "pointer",
+            boxShadow: "0 0 8px #7fffd4",
+            zIndex: 100,
+            transition: "all 0.3s ease",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 12px #00ffff")}
+          onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 8px #7fffd4")}
+          aria-label="Toggle background music"
+        >
+          {audioPlaying ? "🔊 Ambient On" : "🔇 Ambient Off"}
+        </button>
+
+        {/* Hero */}
+        <section
+          style={{
+            marginBottom: 48,
+            textAlign: "center",
+            fontFamily: "'Playfair Display', serif",
+          }}
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: -40, scale: 0.85 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1 }}
+            style={{
+              fontSize: "4rem",
+              color: "#a29bfe",
+              textShadow: "0 0 20px #7e72f5, 0 0 40px #7e72f5",
+              marginBottom: 12,
+              userSelect: "text",
+            }}
+          >
+            Hey, I&apos;m Alex.
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.8 }}
+            transition={{ delay: 1.1, duration: 1.2 }}
+            style={{
+              fontSize: "1.4rem",
+              fontWeight: "600",
+              letterSpacing: 0.4,
+              color: "#b0b0ff",
+              fontFamily: "'Space Mono', monospace",
+            }}
+          >
+            Frontend dev making cool stuff & experimental UIs.
+          </motion.p>
+        </section>
+
+        {/* Projects - fluid no boxes */}
+        <section
+          style={{
+            marginBottom: 56,
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: "900",
+              fontSize: 28,
+              textAlign: "center",
+              color: "#f3e8ff",
+              marginBottom: 36,
+              textShadow: "0 0 10px #bb99ff",
+            }}
+          >
+            Projects
+          </h2>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 30,
+              paddingLeft: 16,
+              paddingRight: 16,
+              userSelect: "text",
+            }}
+          >
+            {[
+              {
+                title: "Portfolio Website",
+                description: "An aesthetic personal site showcasing projects.",
+                link: "https://alex.dev",
+              },
+              {
+                title: "Weather App",
+                description: "Real-time forecasts with smooth UI animations.",
+                link: "https://weather.alex.dev",
+              },
+              {
+                title: "Task Manager",
+                description: "Drag-and-drop productivity app with a twist.",
+                link: "https://tasks.alex.dev",
+              },
+              {
+                title: "E-commerce UI",
+                description: "Modern, responsive shopping experience UI.",
+                link: "https://shop.alex.dev",
+              },
+            ].map(({ title, description, link }, idx) => (
+              <motion.a
+                key={idx}
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                whileHover={{
+                  scale: 1.05,
+                  color: "#6f94ff",
+                  textShadow: "0 0 10px #6f94ff"
+                }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                style={{
+                  color: "#d0ccff",
+                  fontWeight: "700",
+                  fontSize: 20,
+                  textDecoration: "none",
+                  boxShadow: "none",
+                  borderRadius: 0,
+                  paddingBottom: 4,
+                  cursor: "pointer",
+                  userSelect: "text",
+                }}
+              >
+                <span style={{ fontSize: 24, fontWeight: 900, color: "#8a7fff" }}>
+                  {title}
+                </span>{" "}
+                - <span style={{ fontWeight: 400, fontSize: 16, color: "#c0c0e0" }}>
+                  {description}
+                </span>
+              </motion.a>
+            ))}
+          </div>
+        </section>
+
+        {/* Tech Stack */}
+        <section
+          style={{
+            marginBottom: 80,
+            position: "relative",
+            height: 220,
+            pointerEvents: "none",
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: "900",
+              fontSize: 28,
+              textAlign: "center",
+              color: "#d6b9ff",
+              marginBottom: 24,
+              pointerEvents: "auto",
+              userSelect: "none",
+              textShadow: "0 0 12px #bb99ff",
+            }}
+          >
+            Tech Stack
+          </h2>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: 180,
+              marginTop: 4,
+            }}
+          >
+            {techStacks.map((tech, i) => {
+              // Random positions in circle shape
+              const angle = (i / techStacks.length) * 2 * Math.PI;
+              const radius = 70 + Math.sin(i) * 15;
+              const x = 50 + radius * Math.cos(angle);
+              const y = 90 + radius * Math.sin(angle);
+              const rotation = (Math.random() - 0.5) * 30;
+              return (
+                <motion.div
+                  key={tech}
+                  style={{
+                    position: "absolute",
+                    left: `${x}%`,
+                    top: `${y}px`,
+                    padding: "8px 16px",
+                    backgroundColor: "#382f6c",
+                    color: "#cfcfff",
+                    fontWeight: "700",
+                    borderRadius: 20,
+                    fontSize: 14,
+                    transform: `rotate(${rotation}deg)`,
+                    userSelect: "none",
+                    boxShadow: "0 0 15px #7f7fff88",
+                    pointerEvents: "auto",
+                    cursor: "default",
+                    whiteSpace: "nowrap",
+                  }}
+                  whileHover={{
+                    scale: 1.15,
+                    boxShadow: "0 0 25px #aabaff",
+                    backgroundColor: "#4a3f7c"
+                  }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  {tech}
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section
+          style={{
+            textAlign: "center",
+            marginBottom: 60,
+            fontFamily: "'Space Mono', monospace",
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: "700",
+              fontSize: 28,
+              color: "#bb99ff",
+              marginBottom: 12,
+              textShadow: "0 0 15px #9988ff",
+            }}
+          >
+            Let&apos;s Connect
+          </h2>
+          <p style={{ color: "#bbbaff", marginBottom: 20 }}>
+            Open to freelance projects & collaborations.
+          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 30,
+              fontSize: 18,
+            }}
+          >
+            <motion.a
+              href="mailto:alex@example.com"
+              style={{ color: "#a3a9ff", textDecoration: "none" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{
+                color: "#00ffff",
+                textShadow: "0 0 10px #00ffff"
+              }}
+            >
+              Email
+            </motion.a>
+            <motion.a
+              href="https://github.com/alexdev"
+              style={{ color: "#a3a9ff", textDecoration: "none" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{
+                color: "#00ffff",
+                textShadow: "0 0 10px #00ffff"
+              }}
+            >
+              GitHub
+            </motion.a>
+            <motion.a
+              href="https://linkedin.com/in/alexdev"
+              style={{ color: "#a3a9ff", textDecoration: "none" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{
+                color: "#00ffff",
+                textShadow: "0 0 10px #00ffff"
+              }}
+            >
+              LinkedIn
+            </motion.a>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eco Bottle - Sustainable Hydration Revolution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #e1e1e1;
+      background: linear-gradient(135deg, #0c1445 0%, #1a2456 25%, #2d4a7a 50%, #3e6b8f 75%, #4f8ca3 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating geometric shapes */
+    .floating-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      animation: float 20s infinite linear;
+    }
+
+    .shape1 {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(45deg, #00ffab, #00d4aa);
+      border-radius: 50%;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape2 {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      transform: rotate(45deg);
+      top: 30%;
+      right: 20%;
+      animation-delay: -5s;
+    }
+
+    .shape3 {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(45deg, #74b9ff, #0984e3);
+      border-radius: 20px;
+      bottom: 20%;
+      left: 15%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(90deg); }
+      50% { transform: translateY(-40px) rotate(180deg); }
+      75% { transform: translateY(-20px) rotate(270deg); }
+    }
+
+    #header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(12, 20, 69, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    #header-img {
+      height: 50px;
+      filter: drop-shadow(0 0 10px rgba(0, 255, 171, 0.3));
+    }
+
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: #00ffab;
+      text-shadow: 0 0 20px rgba(0, 255, 171, 0.5);
+    }
+
+    #nav-bar {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-decoration: none;
+      color: #e3fdfd;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 171, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      background: rgba(0, 255, 171, 0.1);
+      color: #00ffab;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 255, 171, 0.2);
+    }
+
+    main {
+      margin-top: 120px;
+      padding: 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1rem;
+    }
+
+    /* Hero Section */
+    #hero {
+      text-align: center;
+      padding: 8rem 1rem;
+      position: relative;
+    }
+
+    .hero-content {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      padding: 4rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 4rem;
+      color: #00ffab;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(0, 255, 171, 0.5);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 30px rgba(0, 255, 171, 0.5); }
+      to { text-shadow: 0 0 40px rgba(0, 255, 171, 0.8), 0 0 60px rgba(0, 255, 171, 0.3); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      color: #b3d9ff;
+    }
+
+    .hero-image {
+      width: 300px;
+      height: 300px;
+      margin: 2rem auto;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
+      transition: transform 0.3s ease;
+    }
+
+    .hero-image:hover {
+      transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.05);
+    }
+
+    /* Features Section */
+    #features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 3rem;
+      padding: 6rem 1rem;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(0, 255, 171, 0.1), transparent);
+      transform: rotate(45deg);
+      transition: all 0.5s;
+      opacity: 0;
+    }
+
+    .feature:hover::before {
+      opacity: 1;
+      animation: shimmer 1s ease-in-out;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .feature:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 255, 171, 0.2);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature h2 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: #00ffab;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature p {
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: #b3d9ff;
+      line-height: 1.8;
+    }
+
+    /* Product Grid */
+    #products {
+      padding: 6rem 1rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      color: #00ffab;
+      margin-bottom: 4rem;
+      text-shadow: 0 0 20px rgba(0, 255, 171, 0.3);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 3rem;
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #00ffab, #74b9ff, #ff6b6b);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .product-card:hover {
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .product-image {
+      width: 200px;
+      height: 200px;
+      border-radius: 15px;
+      margin: 0 auto 2rem;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .product-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #00ffab;
+      margin-bottom: 1rem;
+    }
+
+    .product-price {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 2.5rem;
+      color: #ff6b6b;
+      margin-bottom: 1rem;
+    }
+
+    .product-features {
+      color: #b3d9ff;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    .buy-btn {
+      background: linear-gradient(45deg, #00ffab, #00d4aa);
+      color: #000;
+      border: none;
+      padding: 1rem 3rem;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(0, 255, 171, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .buy-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .buy-btn:hover::before {
+      left: 100%;
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 255, 171, 0.4);
+    }
+
+    /* Video Section */
+    #video-section {
+      text-align: center;
+      padding: 6rem 1rem;
+    }
+
+    .video-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 3rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    #video {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Newsletter Section */
+    #form-section {
+      text-align: center;
+      padding: 6rem 1rem;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 4rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    #form {
+      display: flex;
+      gap: 1rem;
+      max-width: 400px;
+      margin: 2rem auto 0;
+    }
+
+    #email {
+      flex: 1;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    #email::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    #submit {
+      padding: 1rem 2rem;
+      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+    }
+
+    #submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+    }
+
+    /* Music Toggle */
+    button#music-toggle {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 1rem;
+      font-size: 1rem;
+      z-index: 1001;
+      background: linear-gradient(45deg, #74b9ff, #0984e3);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      box-shadow: 0 10px 20px rgba(116, 185, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    button#music-toggle:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(116, 185, 255, 0.4);
+    }
+
+    /* Snowfall Canvas */
+    #snowfall-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      #nav-bar {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-image {
+        width: 250px;
+        height: 250px;
+      }
+
+      #features {
+        grid-template-columns: 1fr;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #form {
+        flex-direction: column;
+      }
+    }
+
+          .project-card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .preview-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .project-card:hover .preview-image {
+        transform: scale(1.05);
+      }
+
+  </style>
+</head>
+<body>
+
+  <div class="floating-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Siddhartha_Corsus/Psychedelic/01_Siddhartha_Corsus_-_Nature.mp3" type="audio/mp3" />
+    Your browser does not support the audio element.
+  </audio>
+  <button id="music-toggle" onclick="toggleMusic()">🎵 Toggle Music</button>
+
+  <header id="header">
+    <div class="header-content">
+      <div class="logo-container">
+        <img id="header-img" src="https://i.imgur.com/N5uCbDu.png" alt="Eco Bottle Logo" />
+        <div class="logo-text">EcoBottle</div>
+      </div>
+      <nav id="nav-bar">
+        <a class="nav-link" href="#features">Features</a>
+        <a class="nav-link" href="#products">Products</a>
+        <a class="nav-link" href="#video-section">Demo</a>
+        <a class="nav-link" href="#form-section">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <a href="https://mycoolproject.netlify.app/" target="_blank" class="project-card">
+  <div class="preview-container">
+    <img src="assets/preview.gif" class="preview-image" />
+  </div>
+  <h3>My Cool Project</h3>
+    </a>
+
+    <section id="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">EcoBottle Revolution</h1>
+        <p class="hero-subtitle">Sustainable hydration that keeps your drinks perfect for hours while saving our planet</p>
+        <img class="hero-image" src="https://i.imgur.com/N5uCbDu.png" alt="Eco Bottle Hero" />
+        <p>Built with 100% recycled stainless steel • Keeps drinks cold for 36+ hours • Zero plastic waste</p>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="feature">
+        <img class="feature-icon" src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=80&h=80&fit=crop&crop=center" alt="Premium Materials" />
+        <h2>Premium Materials</h2>
+        <p>Crafted from high-grade recycled stainless steel with double-wall vacuum insulation technology that maintains your drink's temperature for hours while being completely eco-friendly.</p>
+      </div>
+      <div class="feature">
+        <img class="feature-icon" src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=80&h=80&fit=crop&crop=center" alt="Planet Positive" />
+        <h2>Planet Positive</h2>
+        <p>Every EcoBottle prevents hundreds of single-use plastic bottles from polluting our oceans. Join the movement of over 100,000 eco-warriors making a real difference.</p>
+      </div>
+      <div class="feature">
+        <img class="feature-icon" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=80&h=80&fit=crop&crop=center" alt="Unmatched Quality" />
+        <h2>Unmatched Quality</h2>
+        <p>Each bottle undergoes 15-point quality testing including leak-proof verification, temperature retention analysis, and durability stress tests to ensure perfection.</p>
+      </div>
+    </section>
+
+    <section id="products">
+      <h2 class="section-title">Choose Your EcoBottle</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <img class="product-image" src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=200&h=200&fit=crop&crop=center" alt="Basic EcoBottle" />
+          <h3 class="product-title">Starter Bottle</h3>
+          <div class="product-price">$29</div>
+          <div class="product-features">
+            500ml capacity<br />
+            12-hour temperature control<br />
+            1-year warranty<br />
+            Leak-proof design
+          </div>
+          <button class="buy-btn" onclick="buyProduct('starter')">Buy Now</button>
+        </div>
+
+        <div class="product-card">
+          <img class="product-image" src="https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=200&h=200&fit=crop&crop=center" alt="Premium EcoBottle" />
+          <h3 class="product-title">Premium Bottle</h3>
+          <div class="product-price">$49</div>
+          <div class="product-features">
+            750ml capacity<br />
+            24-hour temperature control<br />
+            2-year warranty<br />
+            Advanced grip design
+          </div>
+          <button class="buy-btn" onclick="buyProduct('premium')">Buy Now</button>
+        </div>
+
+        <div class="product-card">
+          <img class="product-image" src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=200&h=200&fit=crop&crop=center" alt="Pro EcoBottle" />
+          <h3 class="product-title">Pro Bottle</h3>
+          <div class="product-price">$69</div>
+          <div class="product-features">
+            1L capacity<br />
+            36-hour temperature control<br />
+            Lifetime warranty<br />
+            Professional grade steel
+          </div>
+          <button class="buy-btn" onclick="buyProduct('pro')">Buy Now</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="video-section">
+      <h2 class="section-title">See It In Action</h2>
+      <div class="video-container">
+        <iframe
+          id="video"
+          width="800"
+          height="450"
+          src="https://www.youtube.com/embed/tgbNymZ7vqY"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </section>
+
+    <section id="form-section">
+      <h2 class="section-title">Stay Updated</h2>
+      <div class="form-container">
+        <p>Join our community of eco-warriors and get exclusive updates, sustainability tips, and early access to new products.</p>
+        <form id="form" action="https://www.freecodecamp.com/email-submit">
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="Enter your email address"
+            required
+          />
+          <input id="submit" type="submit" value="Subscribe" />
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <canvas id="snowfall-canvas"></canvas>
+
+  <script>
+    // Music toggle
+    let isPlaying = false;
+    const audio = document.getElementById("bg-music");
+
+    function toggleMusic() {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+    }
+
+    // Buy product function
+    function buyProduct(type) {
+      const products = {
+        starter: { name: 'Starter Bottle', price: '$29' },
+        premium: { name: 'Premium Bottle', price: '$49' },
+        pro: { name: 'Pro Bottle', price: '$69' }
+      };
+
+      const product = products[type];
+      alert(`🎉 Thanks for choosing the ${product.name} (${product.price})!\n\nYou'll be redirected to our secure checkout page.\n\n🌱 Every purchase plants a tree and removes plastic from our oceans!`);
+
+      // In a real application, this would redirect to a payment processor
+      console.log(`Purchasing ${product.name} for ${product.price}`);
+    }
+
+    // Enhanced snowfall effect
+    const canvas = document.getElementById("snowfall-canvas");
+    const ctx = canvas.getContext("2d");
+
+    let width, height;
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const maxFlakes = 80;
+    const flakes = [];
+
+    function Flake() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.size = Math.random() * 4 + 2;
+      this.speed = Math.random() * 1 + 0.5;
+      this.wind = Math.random() * 0.5 - 0.25;
+      this.opacity = Math.random() * 0.6 + 0.2;
+    }
+
+    Flake.prototype.update = function () {
+      this.y += this.speed;
+      this.x += this.wind;
+
+      if (this.y > height) {
+        this.y = 0;
+        this.x = Math.random() * width;
+      }
+      if (this.x > width) this.x = 0;
+      if (this.x < 0) this.x = width;
+    };
+
+    Flake.prototype.draw = function () {
+      ctx.save();
+      ctx.globalAlpha = this.opacity;
+      ctx.fillStyle = '#00ffab';
+      ctx.shadowColor = '#00ffab';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+
+    for (let i = 0; i < maxFlakes; i++) {
+      flakes.push(new Flake());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      flakes.forEach(flake => {
+        flake.update();
+        flake.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
