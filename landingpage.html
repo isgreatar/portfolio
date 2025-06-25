@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -563,30 +562,6 @@
         flex-direction: column;
       }
     }
-
-          .project-card {
-        display: block;
-        text-decoration: none;
-        color: inherit;
-      }
-
-      .preview-container {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-      }
-
-      .preview-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-      }
-
-      .project-card:hover .preview-image {
-        transform: scale(1.05);
-      }
-
   </style>
 </head>
 <body>
@@ -619,13 +594,6 @@
   </header>
 
   <main>
-    <a href="https://mycoolproject.netlify.app/" target="_blank" class="project-card">
-  <div class="preview-container">
-    <img src="assets/preview.gif" class="preview-image" />
-  </div>
-  <h3>My Cool Project</h3>
-    </a>
-
     <section id="hero">
       <div class="hero-content">
         <h1 class="hero-title">EcoBottle Revolution</h1>
@@ -668,7 +636,7 @@
           </div>
           <button class="buy-btn" onclick="buyProduct('starter')">Buy Now</button>
         </div>
-
+        
         <div class="product-card">
           <img class="product-image" src="https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=200&h=200&fit=crop&crop=center" alt="Premium EcoBottle" />
           <h3 class="product-title">Premium Bottle</h3>
@@ -681,7 +649,7 @@
           </div>
           <button class="buy-btn" onclick="buyProduct('premium')">Buy Now</button>
         </div>
-
+        
         <div class="product-card">
           <img class="product-image" src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=200&h=200&fit=crop&crop=center" alt="Pro EcoBottle" />
           <h3 class="product-title">Pro Bottle</h3>
@@ -752,10 +720,10 @@
         premium: { name: 'Premium Bottle', price: '$49' },
         pro: { name: 'Pro Bottle', price: '$69' }
       };
-
+      
       const product = products[type];
       alert(`🎉 Thanks for choosing the ${product.name} (${product.price})!\n\nYou'll be redirected to our secure checkout page.\n\n🌱 Every purchase plants a tree and removes plastic from our oceans!`);
-
+      
       // In a real application, this would redirect to a payment processor
       console.log(`Purchasing ${product.name} for ${product.price}`);
     }
